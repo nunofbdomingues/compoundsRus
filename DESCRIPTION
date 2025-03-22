@@ -1,0 +1,23 @@
+Package: compoundsRus
+Type: Package
+Title: Create compound databases for annotation of metabolites
+Version: 0.5.0
+Authors@R: person("Nuno", "Domingues", email = "nunodomingues44@gmail.com",
+  role = c("aut", "cre"))
+Description: R package to create compounds' databases organism-specifics. 
+    These databases may be used as a reference for annotation of peaks from
+    mass spectometry data. It uses KEGG and PubChem to extract data.
+License: MIT + file LICENSE
+Imports:
+    dplyr (>= 1.1.4),
+    tidyr (>= 1.3.1),
+    tibble (>= 3.2.1),
+    KEGGREST (>= 1.42.0),
+    rvest (>= 1.0.4),
+    purrr (>= 1.0.4),
+    magrittr (>= 2.0.3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)
+
