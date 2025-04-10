@@ -68,7 +68,6 @@
       elemsToSearch <- paste(SIDs[counter:length(SIDs)], collapse = ",")
     }
 
-    print(elemsToSearch)
     html <- rvest::read_html(paste0("https://pubchem.ncbi.nlm.nih.gov/rest/pug/substance/sid/",elemsToSearch,"/XML"))
 
     compoundsToAppend <- html |>
@@ -81,7 +80,6 @@
     # In order to respect the time between queries:
     Sys.sleep(1.5)
   }
-  View(compoundList)
   return(compoundList)
 }
 
