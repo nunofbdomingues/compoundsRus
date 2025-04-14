@@ -40,10 +40,10 @@ getOrganismCode <- function(orgName) {
 #' @description
 #' Simple function to provide all available organisms present in the KEGG database.
 #' @returns
-#' A chr vector containing all organisms' names
+#' A data.frame vector containing all organisms' names available in KEGG.
 #' @export
 #'
-getOrganismName <- function() {
-  organisms[[2]]
+getOrganismNamesCode <- function() {
+  organisms
 }
 
