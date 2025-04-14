@@ -4,11 +4,9 @@
 \alias{getOrganismCode}
 \title{-- FOR FUTURE USE ON SHINY APP -- Displays the organism code corresponding to the scientific name}
 \usage{
-getOrganismCode(orgTable, orgName)
+getOrganismCode(orgName)
 }
 \arguments{
-\item{orgTable}{Dataframe with a two columns: one with the organism KEGG codes, and the other with the organism's scientific name.}
-
 \item{orgName}{Scientific name of the organism of interest.}
 }
 \value{
@@ -23,5 +21,5 @@ the KEGG identifier respective to that organism.
 df <- whichOrganisms(x = "organism")
 
 #Get KEGG ID for Vitis vinifera
-getOrganismCode(orgTable = df, orgName = "Vitis vinifera (wine grape)")
+getOrganismCode(orgName = "Vitis vinifera (wine grape)")
 }

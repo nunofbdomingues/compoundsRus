@@ -1,7 +1,7 @@
 Package: compoundsRus
 Type: Package
 Title: Create compound databases for annotation of metabolites
-Version: 0.6.5
+Version: 0.6.8
 Authors@R: person("Nuno", "Domingues", email = "nunodomingues44@gmail.com",
   role = c("aut", "cre"))
 Description: R package to create compounds' databases organism-specifics. 

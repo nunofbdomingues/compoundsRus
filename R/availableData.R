@@ -26,12 +26,24 @@ whichOrganisms <- function(x = "organism") {
 #' df <- whichOrganisms(x = "organism")
 #'
 #' #Get KEGG ID for Vitis vinifera
-#' getOrganismCode(orgTable = df, orgName = "Vitis vinifera (wine grape)")
-#' @param orgTable Dataframe with a two columns: one with the organism KEGG codes, and the other with the organism's scientific name.
+#' getOrganismCode(orgName = "Vitis vinifera (wine grape)")
 #' @param orgName Scientific name of the organism of interest.
 #' @export
-getOrganismCode <- function(orgTable, orgName) {
+getOrganismCode <- function(orgName) {
 
-  orgTable[orgTable$species == orgName,][[1]]
+  organisms[organisms$species == orgName,][[1]]
+}
+
+
+#' Get all organisms' names available on KEGG
+#'
+#' @description
+#' Simple function to provide all available organisms present in the KEGG database.
+#' @returns
+#' A chr vector containing all organisms' names
+#' @export
+#'
+getOrganismName <- function() {
+  organisms[[2]]
 }
 

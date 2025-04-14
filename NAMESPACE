@@ -2,6 +2,7 @@
 
 export(getCompoundTable)
 export(getOrganismCode)
+export(getOrganismName)
 export(whichOrganisms)
 importFrom(KEGGREST,keggConv)
 importFrom(KEGGREST,keggGet)
