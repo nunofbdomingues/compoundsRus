@@ -92,10 +92,13 @@ getCompoundTable <- function(orgCode, db, complete = FALSE) {
 
     compoundsKnpSck <- .getKnapSackCompounds(item = "organism", keyword = keyword, species = species)
 
-    finalCompoundDB <- finalCompoundDB |>
-      dplyr::mutate(SNPSCKID = NA, .after = CID) |>
-      dplyr::mutate(ORGANISM = "Species") |>
-      rbind(compoundsKnpSck)
+    if(!is.null(compoundsKnpSck)) {
+      finalCompoundDB <- finalCompoundDB |>
+        dplyr::mutate(SNPSCKID = NA, .after = CID) |>
+        dplyr::mutate(ORGANISM = "Species") |>
+        rbind(compoundsKnpSck)
+    }
+
   }
 
   return(finalCompoundDB)
@@ -192,7 +195,7 @@ getCompoundTable <- function(orgCode, db, complete = FALSE) {
 
   purrr::map_dfr(listOfKegg, function(myBigList) {
 
-    tibble::tibble(NAME = myBigList[[property]][1] %||% NA)
+    tibble::tibble(!!property := unlist(myBigList[[property]][1])[1] %||% NA)
 
   })
 
@@ -256,8 +259,8 @@ getCompoundTable <- function(orgCode, db, complete = FALSE) {
 
 
   # Unlists the pathways, resulting on a single string value with all the pathways to which the compound belongs to, where each pathwayName | keggID is separated by " & "
-  finalCompactCompoundsPathways.df <- compoundsPathways.df %>%
-    dplyr::mutate(., pathways = paste(as.vector(unlist(data)), collapse = " & "), .keep = "unused")
+  finalCompactCompoundsPathways.df <- compoundsPathways.df |>
+    dplyr::mutate(pathways = paste(as.vector(unlist(data)), collapse = " & "), .keep = "unused")
 
   return(finalCompactCompoundsPathways.df)
 }

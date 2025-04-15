@@ -2,15 +2,14 @@
 #'
 #' @param compounds Character vector with valid KEGG IDs
 #' @importFrom rvest read_html
-#' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
-#' @importFrom stats na.omit setNames
+#' @importFrom stats na.omit
 #' @importFrom KEGGREST keggConv
 .getPubChemCompounds <- function(compounds) {
   pubChemIDs <- KEGGREST::keggConv("pubchem", compounds, querySize = 100)
 
-  pubChemIDsVect <- pubChemIDs %>%
-    gsub("pubchem:", "", .) %>%
+  pubChemIDsVect <- pubChemIDs |>
+    gsub("pubchem:", "", x = _) |>
     unname()
 
   compoundList <- .getCIDs(pubChemIDsVect)
@@ -20,8 +19,8 @@
 
   finalCompoundList <- .getCIDsProperties(compoundListwCID, pubChemIDswCID)
 
-  keggNoPub <- gsub("cpd:", "", names(pubChemIDs)) %>%
-    gsub("gl:", "", .)
+  keggNoPub <- gsub("cpd:", "", names(pubChemIDs)) |>
+    gsub("gl:", "", x = _)
 
   compoundsLeft <- compounds[-which(compounds %in% keggNoPub)]
 
@@ -31,21 +30,19 @@
 
     compoundLeftInfo <- append(compoundLeftInfo, KEGGREST::keggGet(compoundsLeft[counter:(counter+9)]))
 
+
     counter <- counter + 10
   }
 
   properties <- c("ENTRY", "NAME", "FORMULA", "EXACT_MASS")
 
-  compoundLeftList <<- as.data.frame(do.call(cbind,
+  compoundLeftList <- as.data.frame(do.call(cbind,
                                         lapply(properties,
                                                function(prop) .getKeggProperties(compoundLeftInfo, prop)))) |>
-    na.omit() |>
-    setNames(c("ENTRY", "NAME", "FORMULA", "EXACT_MASS"))
-
+    na.omit()
 
   compoundLeftList <- compoundLeftList |>
     dplyr::mutate(CID = NA, .after = ENTRY)
-
 
   finalRealCompoundList <- rbind(na.omit(finalCompoundList), compoundLeftList)
 
@@ -88,8 +85,6 @@
 #'
 #' @param CIDs Character vector with valid CIDs
 #' @importFrom rvest read_html
-#' @importFrom magrittr %>%
-#' @importFrom rvest read_html
 .getCIDsProperties <- function(CIDs, pubChemIDswCID) {
 
   counter <- 1
@@ -99,14 +94,14 @@
     if((length(CIDs) - counter) >= 300) {
       elemsToSearch <- paste(CIDs[counter:(counter+299)], collapse = ",")
 
-      keggIDs <- gsub("cpd:", "", names(pubChemIDswCID[counter:(counter+299)])) %>%
-        gsub("gl:", "", .)
+      keggIDs <- gsub("cpd:", "", names(pubChemIDswCID[counter:(counter+299)])) |>
+        gsub("gl:", "", x = _)
 
     } else {
       elemsToSearch <- paste(CIDs[counter:length(CIDs)], collapse = ",")
 
-      keggIDs <- gsub("cpd:", "", names(pubChemIDswCID[counter:length(pubChemIDswCID)])) %>%
-        gsub("gl:", "", .)
+      keggIDs <- gsub("cpd:", "", names(pubChemIDswCID[counter:length(pubChemIDswCID)])) |>
+        gsub("gl:", "", x = _)
     }
 
     html <- rvest::read_html(paste0("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/",elemsToSearch,"/property/title,MolecularFormula,ExactMass/XML"))

@@ -2,7 +2,7 @@
 #'
 #' @param item Informs the type of information to be provided to the website.
 #'   * `Organism`;
-#'   * `Metabolie`;
+#'   * `Metabolite`;
 #'   * `Molecular formula`;
 #'   * ...
 #' @param keyword Specifies what is to be searched
@@ -16,23 +16,32 @@
 
   URL <- paste0("https://www.knapsackfamily.com/knapsack_core/result.php?sname=", item,"&word=", keyword)
 
-  knsckCompounds <- request(URL) |>
-    req_perform() |>
-    resp_body_html() |>
-    html_element("table") |>
-    html_table() |>
-    setNames(c("SNPSCKID", "casid", "NAME", "FORMULA", "EXACT_MASS", "ORGANISM")) |>
-    dplyr::filter(str_detect(ORGANISM, paste0("^", keyword))) |>
-    dplyr::mutate(ORGANISM = case_when(str_detect(ORGANISM, species) ~ "Species",
-                                         .default = "Genus"),
-                  ENTRY = NA,
-                  CID = NA,
-                  pathways = NA) |>
-    dplyr::arrange(desc(ORGANISM)) |>
-    dplyr::filter(!duplicated(SNPSCKID)) |>
-    dplyr::select(!casid)
+  tryCatch(
+    expr = {
+      knsckCompounds <- request(URL) |>
+        req_perform() |>
+        resp_body_html() |>
+        html_element("table") |>
+        html_table() |>
+        setNames(c("SNPSCKID", "casid", "NAME", "FORMULA", "EXACT_MASS", "ORGANISM")) |>
+        dplyr::filter(str_detect(ORGANISM, paste0("^", keyword))) |>
+        dplyr::mutate(ORGANISM = case_when(str_detect(ORGANISM, species) ~ "Species",
+                                           .default = "Genus"),
+                      ENTRY = NA,
+                      CID = NA,
+                      pathways = NA) |>
+        dplyr::arrange(desc(ORGANISM)) |>
+        dplyr::filter(!duplicated(SNPSCKID)) |>
+        dplyr::select(!casid)
 
-  return(knsckCompounds)
+      return(knsckCompounds)
+
+    },
+    error = function(error) {
+      return(NULL)
+
+    }
+  )
 }
 
 

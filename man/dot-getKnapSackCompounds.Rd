@@ -10,7 +10,7 @@
 \item{item}{Informs the type of information to be provided to the website.
 \itemize{
 \item \code{Organism};
-\item \code{Metabolie};
+\item \code{Metabolite};
 \item \verb{Molecular formula};
 \item ...
 }}

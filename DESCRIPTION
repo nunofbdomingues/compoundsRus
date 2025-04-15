@@ -1,7 +1,7 @@
 Package: compoundsRus
 Type: Package
 Title: Create compound databases for annotation of metabolites
-Version: 0.6.8.1
+Version: 0.6.9
 Authors@R: person("Nuno", "Domingues", email = "nunodomingues44@gmail.com",
   role = c("aut", "cre"))
 Description: R package to create compounds' databases organism-specifics. 
@@ -15,7 +15,6 @@ Imports:
     KEGGREST (>= 1.47.1),
     rvest (>= 1.0.4),
     purrr (>= 1.0.4),
-    magrittr (>= 2.0.3),
     httr2 (>= 1.1.1),
     stringr (>= 1.5.1)
 Encoding: UTF-8

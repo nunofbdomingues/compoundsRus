@@ -15,23 +15,22 @@ whichOrganisms <- function(x = "organism") {
 }
 
 
-#' -- FOR FUTURE USE ON SHINY APP -- Displays the organism code corresponding to the scientific name
+#' -- FOR FUTURE USE ON SHINY APP -- Displays the organism name corresponding to a given KEGG code
 #'
-#' @description Given a data.frame originated from [whichOrganisms()] and the name of an organism, returns
-#' the KEGG identifier respective to that organism.
+#' @description Given a KEGG code, displays the name of an organism
 #' @returns
-#' A single string with the KEDD ID.
+#' A single string with the organism name.
 #' @examples
 #' #Retrieve available organisms from KEGG
 #' df <- whichOrganisms(x = "organism")
 #'
-#' #Get KEGG ID for Vitis vinifera
-#' getOrganismCode(orgName = "Vitis vinifera (wine grape)")
-#' @param orgName Scientific name of the organism of interest.
+#' #Get name from the KEGG ID for Vitis vinifera
+#' getOrganismCode(orgName = "vvi")
+#' @param orgName KEGG code of the organism of interest.
 #' @export
-getOrganismCode <- function(orgName) {
+getOrganismName <- function(orgName) {
 
-  organisms[organisms$species == orgName,][[1]]
+  organisms[organisms$organism == orgName,][[2]]
 }
 
 
