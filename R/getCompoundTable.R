@@ -35,6 +35,7 @@
 #' @importFrom KEGGREST keggList
 #' @importFrom purrr discard
 #' @importFrom stats na.omit
+#' @importFrom dplyr mutate
 #' @references Afendi, F. M., Okada, T., Yamazaki, M., Hirai-Morita, A., Nakamura, Y., Nakamura, K., Ikeda, S.,
 #' Takahashi, H., Altaf-Ul-Amin, Md., Darusman, L. K., Saito, K., & Kanaya, S. (2012). KNApSAcK
 #' Family Databases: Integrated Metabolite–Plant Species Databases for Multifaceted Plant Research.
@@ -63,12 +64,15 @@ getCompoundTable <- function(orgCode, db, complete = FALSE) {
 
     compoundInfo <- .getKeggCompounds(compoundsPathways)
 
-    properties <- c("ENTRY", "NAME", "FORMULA", "EXACT_MASS")
+    properties <- c("ENTRY", "NAME", "FORMULA", "EXACT_MASS", "BRITE")
 
     finalCompoundList <- as.data.frame(do.call(cbind,
                                           lapply(properties,
                                                  function(prop) .getKeggProperties(compoundInfo, prop)))) |>
       na.omit()
+
+    finalCompoundList <- finalCompoundList |>
+      dplyr::mutate(.data = _, BRITE = .briteParser(BRITE))
 
     colnames(finalCompoundList) <- properties
 
@@ -193,11 +197,21 @@ getCompoundTable <- function(orgCode, db, complete = FALSE) {
 #' @importFrom tibble tibble
 .getKeggProperties <- function(listOfKegg, property) {
 
+  if(property == "BRITE") {
+    purrr::map_dfr(listOfKegg, function(myBigList) {
+
+      tibble::tibble(!!property := paste(unlist(myBigList[[property]]), collapse = " | ") %||% NA)
+
+    })
+
+  } else {
+
   purrr::map_dfr(listOfKegg, function(myBigList) {
 
     tibble::tibble(!!property := unlist(myBigList[[property]][1])[1] %||% NA)
 
   })
+    }
 
 }
 
