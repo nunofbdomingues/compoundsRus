@@ -8,7 +8,7 @@
 
   briteFilt <- stringr::str_extract_all(briteCol, "(?:[A-Z].*?\\[BR:br080[0-2]\\d\\].*?)(?=\\s*C\\d{5})")
 
-  finalBrite <- purrr::map_chr(aaah, .parserElem)
+  finalBrite <- purrr::map_chr(briteFilt, .parserElem)
 
   return(finalBrite)
 }
