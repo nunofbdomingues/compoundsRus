@@ -3,6 +3,7 @@
 #' @param briteCol List with BRITE entries
 #' @importFrom purrr map_chr has_element discard
 #' @importFrom stringr str_extract_all
+#' @keywords internal
 .briteParser <- function(briteCol) {
 
   briteFilt <- stringr::str_extract_all(briteCol, "(?:[A-Z].*?\\[BR:br080[0-2]\\d\\].*?)(?=\\s*C\\d{5})")
