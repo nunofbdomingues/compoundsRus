@@ -18,13 +18,14 @@
 
   tryCatch(
     expr = {
-      knsckCompounds <- request(URL) |>
+      knsckCompounds <<- request(URL) |>
         req_perform() |>
         resp_body_html() |>
         html_element("table") |>
         html_table() |>
         setNames(c("SNPSCKID", "casid", "NAME", "FORMULA", "EXACT_MASS", "ORGANISM")) |>
         dplyr::filter(str_detect(ORGANISM, paste0("^", keyword))) |>
+        dplyr::mutate(BRITE = NA, .after = EXACT_MASS) |>
         dplyr::mutate(ORGANISM = case_when(str_detect(ORGANISM, species) ~ "Species",
                                            .default = "Genus"),
                       ENTRY = NA,

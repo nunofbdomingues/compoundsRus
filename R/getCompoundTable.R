@@ -72,13 +72,13 @@ getCompoundTable <- function(orgCode, db, complete = FALSE) {
       na.omit()
 
     finalCompoundList <- finalCompoundList |>
-      dplyr::mutate(.data = _, BRITE = .briteParser(BRITE))
-
-    colnames(finalCompoundList) <- properties
+      dplyr::mutate(.data = _, BRITE = .briteParser(BRITE)) |>
+      dplyr::mutate("CID" = NA, .after = NAME)
 
   } else if(db == "PubChem") {
 
-    finalCompoundList <- .getPubChemCompounds(compoundsPathways)
+    finalCompoundList <- .getPubChemCompounds(compoundsPathways) |>
+      dplyr::mutate(BRITE = NA, .after = EXACT_MASS)
   }
 
 
